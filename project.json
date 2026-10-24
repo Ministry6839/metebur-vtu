@@ -1,0 +1,20 @@
+{
+  "overview": "A bill payment and data reselling app where users top up a wallet, buy mobile data bundles, pay utility bills, and track every transaction, with an admin console for managing bundles and billers.",
+  "features": [
+    "Sign in and get a personal wallet with a balance",
+    "Top up wallet and view a full credit/debit ledger",
+    "Browse and buy mobile data bundles by network provider",
+    "Pay electricity, airtime, cable TV, and internet bills",
+    "Unified transaction history with filters, search, and receipt detail views",
+    "Admin console to manage bundles, billers, and view all orders"
+  ],
+  "category": "finance",
+  "tags": [
+    "bill-payment",
+    "data-reselling",
+    "wallet",
+    "fintech",
+    "admin"
+  ],
+  "last_updated": "2026-10-24T21:51:26.173Z"
+}

@@ -1,0 +1,250 @@
+// Version: 4.0.0
+type AccessControlState__201339279 =
+  {
+    var adminAssigned : Bool;
+    userRoles : Map__230067015<Principal, UserRole__91647283>
+  };
+type Amount__460182544 = Nat;
+type BillCategory__255746527 = {#airtime; #cableTv; #electricity; #internet};
+type BillPayment__120111873 =
+  {
+    amount : Nat;
+    at : Nat;
+    billerId : Nat;
+    billerName : Text;
+    category : Text;
+    customerNumber : Text;
+    id : Nat;
+    owner : Principal;
+    reference : Text;
+    status : {#completed; #failed; #pending}
+  };
+type BillPayment__13826068 =
+  {
+    amount : Amount__460182544;
+    at : Timestamp__301639476;
+    billerId : Nat;
+    billerName : Text;
+    category : Text;
+    customerNumber : Text;
+    id : Nat;
+    owner : UserId__158757552;
+    reference : Reference__369225292;
+    status : OrderStatus__272730104
+  };
+type BillPayment__251028894 = BillPayment__13826068;
+type Biller__19579140 =
+  {
+    category : BillCategory__255746527;
+    var enabled : Bool;
+    id : Nat;
+    name : Text
+  };
+type Biller__547422182 =
+  {
+    category : {#airtime; #cableTv; #electricity; #internet};
+    var enabled : Bool;
+    id : Nat;
+    name : Text
+  };
+type Biller__592953392 = Biller__19579140;
+type DataBundle__257397386 =
+  {
+    dataVolumeMb : Nat;
+    var enabled : Bool;
+    id : Nat;
+    name : Text;
+    price : Nat;
+    provider : {#airtel; #glo; #mtn; #nineMobile};
+    validityDays : Nat
+  };
+type DataBundle__516686128 = DataBundle__9994958;
+type DataBundle__9994958 =
+  {
+    dataVolumeMb : Nat;
+    var enabled : Bool;
+    id : Nat;
+    name : Text;
+    price : Amount__460182544;
+    provider : NetworkProvider__317782265;
+    validityDays : Nat
+  };
+type DataOrder__372833284 = DataOrder__590975737;
+type DataOrder__584331503 =
+  {
+    amount : Nat;
+    at : Nat;
+    bundleId : Nat;
+    bundleName : Text;
+    id : Nat;
+    owner : Principal;
+    provider : Text;
+    recipient : Text;
+    reference : Text;
+    status : {#completed; #failed; #pending}
+  };
+type DataOrder__590975737 =
+  {
+    amount : Amount__460182544;
+    at : Timestamp__301639476;
+    bundleId : Nat;
+    bundleName : Text;
+    id : Nat;
+    owner : UserId__158757552;
+    provider : Text;
+    recipient : PhoneNumber__169345865;
+    reference : Reference__369225292;
+    status : OrderStatus__272730104
+  };
+type Data__44217153<K, V> = {var count : Nat__227979830; kvs : [var ?(K, V)]};
+type Internal__283199666<K, V> =
+  {children : [var ?Node__204828119<K, V>]; data : Data__44217153<K, V>};
+type Leaf__598469445<K, V> = {data : Data__44217153<K, V>};
+type LedgerEntryKind__481634946 = {#credit; #debit};
+type LedgerEntry__200183106 =
+  {
+    amount : Nat;
+    at : Nat;
+    id : Nat;
+    kind : {#credit; #debit};
+    owner : Principal;
+    reason : Text
+  };
+type LedgerEntry__671029625 = LedgerEntry__820392437;
+type LedgerEntry__820392437 =
+  {
+    amount : Amount__460182544;
+    at : Timestamp__301639476;
+    id : Nat;
+    kind : LedgerEntryKind__481634946;
+    owner : UserId__158757552;
+    reason : Text
+  };
+type List__355132335<T> =
+  {
+    var blockIndex : Nat__227979830;
+    var blocks : [var [var ?T]];
+    var elementIndex : Nat__227979830
+  };
+type List__836382695<T> = List__355132335<T>;
+type Map__230067015<K, V> = Map__405889023<K, V>;
+type Map__405889023<K, V> = Map__603270868<K, V>;
+type Map__603270868<K, V> =
+  {var root : Node__204828119<K, V>; var size : Nat__227979830};
+type Nat__227979830 = Nat__920180692;
+type Nat__920180692 = Nat;
+type NetworkProvider__317782265 = {#airtel; #glo; #mtn; #nineMobile};
+type NewActor__741739862 =
+  {
+    accessControlState : AccessControlState__201339279;
+    billPayments : List__836382695<BillPayment__120111873>;
+    billers : Map__230067015<Nat, Biller__547422182>;
+    bundles : Map__230067015<Nat, DataBundle__257397386>;
+    dataOrders : List__836382695<DataOrder__584331503>;
+    ledger : List__836382695<LedgerEntry__200183106>;
+    nextBillerId : {var value : Nat};
+    nextBundleId : {var value : Nat};
+    nextLedgerId : {var value : Nat};
+    nextOrderId : {var value : Nat};
+    nextPaymentId : {var value : Nat};
+    nextTransactionId : {var value : Nat};
+    transactions : List__836382695<Transaction__916254876>;
+    wallets : Map__230067015<Principal, Wallet__837095037>
+  };
+type Node__204828119<K, V> =
+  {#internal : Internal__283199666<K, V>; #leaf : Leaf__598469445<K, V>};
+type OldActor__508535367 = {};
+type OrderStatus__272730104 = {#completed; #failed; #pending};
+type PhoneNumber__169345865 = Text;
+type Reference__369225292 = Text;
+type Timestamp__301639476 = Nat;
+type TransactionType__47031955 = {#billPayment; #dataPurchase; #topUp};
+type Transaction__488259922 = Transaction__822992244;
+type Transaction__822992244 =
+  {
+    amount : Amount__460182544;
+    at : Timestamp__301639476;
+    counterparty : Text;
+    id : Nat;
+    kind : TransactionType__47031955;
+    owner : UserId__158757552;
+    reference : Reference__369225292;
+    status : Text
+  };
+type Transaction__916254876 =
+  {
+    amount : Nat;
+    at : Nat;
+    counterparty : Text;
+    id : Nat;
+    kind : {#billPayment; #dataPurchase; #topUp};
+    owner : Principal;
+    reference : Text;
+    status : Text
+  };
+type UserId__158757552 = Principal;
+type UserRole__91647283 = {#admin; #guest; #user};
+type Wallet__153140325 = Wallet__955312146;
+type Wallet__837095037 =
+  {var balance : Nat; createdAt : Nat; owner : Principal};
+type Wallet__955312146 =
+  {
+    var balance : Amount__460182544;
+    createdAt : Timestamp__301639476;
+    owner : UserId__158757552
+  };
+{
+  "20261024_000000" : OldActor__508535367 -> NewActor__741739862
+}
+actor  {
+  stable accessControlState :
+    {
+      var adminAssigned : Bool;
+      userRoles : Map__230067015<Principal, UserRole__91647283>
+    };
+  stable billPayments :
+    {
+      var blockIndex : Nat__227979830;
+      var blocks : [var [var ?BillPayment__251028894]];
+      var elementIndex : Nat__227979830
+    };
+  stable billers :
+    {
+      var root : Node__204828119<Nat, Biller__592953392>;
+      var size : Nat__227979830
+    };
+  stable bundles :
+    {
+      var root : Node__204828119<Nat, DataBundle__516686128>;
+      var size : Nat__227979830
+    };
+  stable dataOrders :
+    {
+      var blockIndex : Nat__227979830;
+      var blocks : [var [var ?DataOrder__372833284]];
+      var elementIndex : Nat__227979830
+    };
+  stable ledger :
+    {
+      var blockIndex : Nat__227979830;
+      var blocks : [var [var ?LedgerEntry__671029625]];
+      var elementIndex : Nat__227979830
+    };
+  stable nextBillerId : {var value : Nat};
+  stable nextBundleId : {var value : Nat};
+  stable nextLedgerId : {var value : Nat};
+  stable nextOrderId : {var value : Nat};
+  stable nextPaymentId : {var value : Nat};
+  stable nextTransactionId : {var value : Nat};
+  stable transactions :
+    {
+      var blockIndex : Nat__227979830;
+      var blocks : [var [var ?Transaction__488259922]];
+      var elementIndex : Nat__227979830
+    };
+  stable wallets :
+    {
+      var root : Node__204828119<UserId__158757552, Wallet__153140325>;
+      var size : Nat__227979830
+    }
+};

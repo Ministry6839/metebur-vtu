@@ -1,0 +1,226 @@
+type WalletView = 
+ record {
+   balance: Amount;
+   createdAt: Timestamp;
+   owner: UserId;
+ };
+type Value = 
+ variant {
+   "bool": bool;
+   float: float64;
+   "int": int;
+   "nat": nat;
+   "null";
+   "text": text;
+ };
+type UserRole = 
+ variant {
+   admin;
+   guest;
+   user;
+ };
+type UserId = principal;
+type TransactionType = 
+ variant {
+   billPayment;
+   dataPurchase;
+   topUp;
+ };
+type TransactionFilter = 
+ record {
+   from: opt Timestamp;
+   kind: opt TransactionType;
+   search: opt text;
+   to: opt Timestamp;
+ };
+type Transaction = 
+ record {
+   amount: Amount;
+   at: Timestamp;
+   counterparty: text;
+   id: nat;
+   kind: TransactionType;
+   owner: UserId;
+   reference: Reference;
+   status: text;
+ };
+type Timestamp = nat;
+type Result__1 = 
+ variant {
+   err: Error;
+   ok;
+ };
+type Result = 
+ record {
+   hasMore: bool;
+   rows: vec vec Cell;
+ };
+type Reference = text;
+type PhoneNumber = text;
+type OrderStatus = 
+ variant {
+   completed;
+   failed;
+   pending;
+ };
+type OrderError = 
+ variant {
+   insufficientFunds: record {
+                        balance: Amount;
+                        required: Amount;
+                      };
+   invalidInput;
+   notFound;
+   notSignedIn;
+ };
+type NetworkProvider = 
+ variant {
+   airtel;
+   glo;
+   mtn;
+   nineMobile;
+ };
+type LedgerEntryKind = 
+ variant {
+   credit;
+   debit;
+ };
+type LedgerEntry = 
+ record {
+   amount: Amount;
+   at: Timestamp;
+   id: nat;
+   kind: LedgerEntryKind;
+   owner: UserId;
+   reason: text;
+ };
+type Error = 
+ variant {
+   AmbiguousAttribute: record {
+                         field: text;
+                         sources: vec text;
+                       };
+   FrontendOriginMismatch: record {
+                             expected: vec text;
+                             got: text;
+                           };
+   FrontendOriginsNotConfigured;
+   MalformedCandid;
+   MissingField: text;
+   MixedSsoSources: record {
+                      otherKeys: vec text;
+                      ssoKeys: vec text;
+                    };
+   NoAttributes;
+   Stale: record {ageNs: nat;};
+   UnknownNonce;
+   UntrustedSsoSource: record {domain: text;};
+ };
+type DataOrder = 
+ record {
+   amount: Amount;
+   at: Timestamp;
+   bundleId: nat;
+   bundleName: text;
+   id: nat;
+   owner: UserId;
+   provider: text;
+   recipient: PhoneNumber;
+   reference: Reference;
+   status: OrderStatus;
+ };
+type DataBundleView = 
+ record {
+   dataVolumeMb: nat;
+   enabled: bool;
+   id: nat;
+   name: text;
+   price: Amount;
+   provider: NetworkProvider;
+   validityDays: nat;
+ };
+type Cell = 
+ record {
+   name: text;
+   value: Value;
+ };
+type CatalogError = 
+ variant {
+   invalidInput;
+   notAuthorized;
+   notFound;
+ };
+type BillerView = 
+ record {
+   category: BillCategory;
+   enabled: bool;
+   id: nat;
+   name: text;
+ };
+type BillPayment = 
+ record {
+   amount: Amount;
+   at: Timestamp;
+   billerId: nat;
+   billerName: text;
+   category: text;
+   customerNumber: text;
+   id: nat;
+   owner: UserId;
+   reference: Reference;
+   status: OrderStatus;
+ };
+type BillCategory = 
+ variant {
+   airtime;
+   cableTv;
+   electricity;
+   internet;
+ };
+type Amount = nat;
+service : {
+  _initialize_access_control: () -> ();
+  _internet_identity_sign_in_finish: () -> (Result__1);
+  _internet_identity_sign_in_start: () -> (blob);
+  assignCallerUserRole: (user: principal, role: UserRole) -> ();
+  createBiller: (category: BillCategory, name: text) -> (BillerView);
+  createDataBundle: (provider: NetworkProvider, name: text, dataVolumeMb:
+   nat, validityDays: nat, price: Amount) -> (DataBundleView);
+  execute: (qJson: text) -> (Result) query;
+  getApiDoc: () -> (text) query;
+  getCallerUserRole: () -> (UserRole) query;
+  getMyLedger: () -> (vec LedgerEntry) query;
+  getMyWallet: () -> (WalletView) query;
+  getTransaction: (id: nat) -> (opt Transaction) query;
+  isCallerAdmin: () -> (bool) query;
+  listAllBillPayments: () -> (vec BillPayment) query;
+  listAllDataOrders: () -> (vec DataOrder) query;
+  listBillers: () -> (vec BillerView) query;
+  listDataBundles: () -> (vec DataBundleView) query;
+  listMyBillPayments: () -> (vec BillPayment) query;
+  listMyDataOrders: () -> (vec DataOrder) query;
+  listTransactions: (filter: TransactionFilter) -> (vec Transaction) query;
+  payBill: (billerId: nat, customerNumber: text, amount: Amount) ->
+   (variant {
+      err: OrderError;
+      ok: BillPayment;
+    });
+  purchaseDataBundle: (bundleId: nat, recipient: PhoneNumber) ->
+   (variant {
+      err: OrderError;
+      ok: DataOrder;
+    });
+  schema: () -> (text) query;
+  topUpWallet: (amount: Amount) -> (LedgerEntry);
+  updateBiller: (id: nat, category: BillCategory, name: text, enabled:
+   bool) -> (variant {
+               err: CatalogError;
+               ok: BillerView;
+             });
+  updateDataBundle: (id: nat, provider: NetworkProvider, name: text,
+   dataVolumeMb: nat, validityDays: nat, price: Amount, enabled: bool) ->
+   (variant {
+      err: CatalogError;
+      ok: DataBundleView;
+    });
+}
